@@ -27,6 +27,7 @@
 	"dependencies": {
 		"@withease/factories": "^1.0.3",
 		"axios": "^1.6.7",
+		"clsx": "^2.1.0",
 		"effector": "^23.1.0",
 		"effector-react": "^23.1.0",
 		"jest": "^29.5.0",
