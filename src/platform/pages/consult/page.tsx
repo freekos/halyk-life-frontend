@@ -1,9 +1,5 @@
-import { Container } from '@/shared/ui'
+// import { Container } from '@/shared/ui'
 
 export function ConsultPage() {
-	return (
-		<>
-			<Container>Consult</Container>
-		</>
-	)
+	return <>{/*<Container>Consult</Container>*/}</>
 }
