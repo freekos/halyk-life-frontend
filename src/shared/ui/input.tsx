@@ -11,7 +11,7 @@ interface InputProps extends ComponentProps<'input'> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-	{ type = 'text', icon = {}, error, ...props }: InputProps,
+	{ type = 'text', icon = {}, error, className, ...props }: InputProps,
 	ref,
 ) {
 	const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -31,6 +31,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 					!!error && 'border-red-500',
 					icon.left && 'pl-16',
 					icon.right && 'pr-16',
+					className,
 				)}
 				type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
 				ref={ref}

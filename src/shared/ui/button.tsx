@@ -13,7 +13,7 @@ const buttonVariants = cva(
 				black: 'bg-black hover:bg-black/90 text-white',
 				success: '',
 				info: '',
-				danger: '',
+				danger: 'bg-red-500 hover:bg-red-500/90 text-white',
 				gray: 'bg-[#EFF0F6] hover:bg-slate-200/80',
 			},
 			size: {
