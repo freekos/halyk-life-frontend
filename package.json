@@ -7,7 +7,7 @@
 		"build": "tsc && vite build",
 		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview --host=0.0.0.0 --port=8080",
-		"test": "NODE_ENV=test jest",
+		"test": "test jest",
 		"prepare": "npx husky install",
 		"commitmsg": "commitlint -E HUSKY_GIT_PARAMS"
 	},

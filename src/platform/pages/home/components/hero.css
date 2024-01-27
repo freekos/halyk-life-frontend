@@ -1,0 +1,11 @@
+.insurance-container {
+    background-image: url("../../../../shared/assets/images/insurance.svg");
+    background-position: right;
+    background-size: cover;
+    opacity: 50%;
+}
+
+.main-container{
+    background-image: url("../../../../shared/assets/images/link-background.png");
+    background-size: cover;
+}

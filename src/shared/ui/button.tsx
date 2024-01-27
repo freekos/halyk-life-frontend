@@ -4,11 +4,11 @@ import type { ComponentProps } from 'react'
 import { forwardRef } from 'react'
 
 const buttonVariants = cva(
-	'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:ouline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+	'inline-flex items-center justify-center rounded-xl text-sm font-medium transition-colors focus-visible:ouline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
 	{
 		variants: {
 			variant: {
-				primary: 'bg-primary hover:bg-primary/90 text-white',
+				primary: 'bg-primary hover:bg-primary/90',
 				secondary: 'bg-secondary hover:bg-secondary/90 text-white',
 				black: 'bg-black hover:bg-black/90 text-white',
 				success: '',
@@ -31,7 +31,7 @@ const buttonVariants = cva(
 			{
 				variant: 'primary',
 				shape: 'outlined',
-				class: 'border border-primary text-primary hover:bg-primary/70 hover:text-white',
+				class: 'border border-black text-black hover:bg-primary/70 hover:text-white',
 			},
 			{
 				variant: 'black',
@@ -42,6 +42,11 @@ const buttonVariants = cva(
 				variant: 'gray',
 				shape: 'filled',
 				class: 'text-slate-500',
+			},
+			{
+				variant: 'primary',
+				shape: 'filled',
+				class: 'text-white',
 			},
 		],
 		defaultVariants: {
