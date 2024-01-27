@@ -1,11 +1,20 @@
 .insurance-container {
-    background-image: url("../../../../shared/assets/images/insurance.svg");
-    background-position: right;
-    background-size: cover;
-    opacity: 50%;
+	background-image: url("../../../../shared/assets/images/insurance.svg");
+	background-position: right;
+	background-size: cover;
+	opacity: 50%;
 }
 
-.main-container{
-    background-image: url("../../../../shared/assets/images/link-background.png");
-    background-size: cover;
+.main-container {
+	background-image: url("../../../../shared/assets/images/link-background.png");
+	background-size: cover;
+}
+
+.hero {
+	background-image: url("../../../../shared/assets/images/hero.png");
+	background-size: cover;
+}
+.image{
+	background-image: url("../../../../shared/assets/images/adv-1.png");
+	background-size: cover;
 }

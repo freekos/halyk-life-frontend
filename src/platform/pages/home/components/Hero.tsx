@@ -15,7 +15,7 @@ export const Hero = () => {
 					</Button>
 				</div>
 			</div>
-			<div className={'w-[40rem] h-[20rem] bg-red-500 rounded-2xl'} />
+			<div className={'w-[30rem] h-[20rem] rounded-2xl hero'} />
 		</div>
 	)
 }
