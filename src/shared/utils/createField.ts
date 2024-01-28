@@ -4,15 +4,16 @@ import { attach, createEvent, createStore } from 'effector'
 interface CreateFieldOptions<T> {
 	initial: T
 	rules: { validate: (value: T) => boolean; message: string }[]
+	disabled?: boolean
 }
 
-export const createField = createFactory(<T>({ initial, rules }: CreateFieldOptions<T>) => {
+export const createField = createFactory(<T>({ initial, rules, disabled }: CreateFieldOptions<T>) => {
 	const valueChangeEv = createEvent<T>()
 	const disableChangeEv = createEvent<boolean>()
 
 	const $value = createStore<T>(initial)
 	const $error = createStore<string | null>(null)
-	const $disabled = createStore<boolean>(false)
+	const $disabled = createStore<boolean>(disabled ?? false)
 
 	const findErrorFx = attach({
 		source: $value,

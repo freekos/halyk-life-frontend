@@ -1,4 +1,5 @@
 import { Button } from '@/shared/ui/button.tsx'
+import { Link } from 'react-router-dom'
 
 import './hero.css'
 
@@ -9,9 +10,11 @@ export const Hero = () => {
 				<h1 className={'text-3xl font-bold text-emerald-500'}>Айя - ваш страховой ассистент</h1>
 				<p className={'text-white'}>Ваш страховой партнер научился думать: приветствуйте AyaAI</p>
 				<div className={'flex gap-5 mt-5 relative'}>
-					<Button size={'lg'} className={'border-white'}>
-						Задать вопрос
-					</Button>
+					<Link to='/consult'>
+						<Button size={'lg'} className={'border-white'}>
+							Задать вопрос
+						</Button>
+					</Link>
 					<Button size={'lg'} shape={'outlined'} className={'border-white text-white'}>
 						Создать страховку
 					</Button>

@@ -13,7 +13,7 @@ export function Routing() {
 					<Route path='/' Component={HomePage} />
 					<Route path='/consult' Component={ConsultPage} />
 					<Route path='/admin' Component={AdminPage} />
-					<Route path='/form/:id' Component={InsuranceFormPage} />
+					<Route path='/form' Component={InsuranceFormPage} />
 				</Routes>
 			</RouterProvider>
 		</BrowserRouter>

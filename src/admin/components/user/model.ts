@@ -65,7 +65,7 @@ export const $users = createStore<UsersStore>({
 	],
 })
 	.on(getUserFx.doneData, (store, data) => {
-		const dataObj = data.data
+		const dataObj = (data as any).data
 		const formattedDate = formatDate(dataObj.person.birthDate)
 		const newUser: User = {
 			name: `${dataObj.person.firstName} ${dataObj.person.lastName} ${dataObj.person.secondName}`,
@@ -77,7 +77,7 @@ export const $users = createStore<UsersStore>({
 		return { ...store, users: [...store.users, newUser] }
 	})
 	.on(getUsersFx.doneData, (store, data) => {
-		const newData = data.map((el) => ({
+		const newData = data.map((el: any) => ({
 			name: `${el.user_data.firstName} ${el.user_data.lastName} ${el.user_data.secondName}`,
 			birthday: formatDate(el.user_data.birthDate),
 			hospital: el.user_data.org,

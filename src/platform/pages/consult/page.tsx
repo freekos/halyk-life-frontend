@@ -8,7 +8,7 @@ import {
 	XCircleIcon,
 } from '@heroicons/react/20/solid'
 import { useUnit } from 'effector-react'
-import { type PropsWithChildren, useEffect } from 'react'
+import { Fragment, type PropsWithChildren, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useSpeechSynthesis } from 'react-speech-kit'
 
@@ -17,7 +17,7 @@ import * as model from './model'
 export function ConsultPage() {
 	const startPage = useUnit(model.pageStartEv)
 	const histories = useUnit(model.$promptsHistory)
-	const speaking = useUnit(model.$speaking)
+	const { speaking, pending } = useUnit({ speaking: model.$speaking, pending: model.$pending })
 	const navigate = useNavigate()
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,26 +25,28 @@ export function ConsultPage() {
 
 	return (
 		<SpeakProvider>
-			<Container
-				className='flex flex-col min-h-screen pb-32 bg-zinc-800'
-				containerClassname='flex-1 max-w-2xl sm:mt-3 sm:mb-10'
-			>
-				<Button shape='outlined' onClick={() => navigate(-1)}>
-					<ArrowLeftIcon width={20} color='white' />
-				</Button>
-				<div className='h-full mt-10'>
-					{histories.map((history, historyIdx, arr) => (
-						<>
-							<div key={historyIdx} className='flex flex-col gap-1'>
-								<h2 className='text-xl text-white font-bold'>{history.prompt}</h2>
-								<p className='text-sm text-gray-300 '>{history.answer}</p>
-							</div>
-							{historyIdx !== arr.length - 1 && <div className='w-full h-px my-5 bg-gray-500' />}
-						</>
-					))}
-				</div>
-				{speaking && <h2 className='text-sm text-white font-bold'>...Speaking</h2>}
-			</Container>
+			<div className='flex-1 bg-zinc-800'>
+				<Container className='flex flex-col my-10 pb-32'>
+					<Button className='fixed top-5 w-fit' size='sm' variant='primary' onClick={() => navigate(-1)}>
+						<ArrowLeftIcon width={20} color='white' />
+					</Button>
+					<div className='flex-1 mt-10'>
+						{histories.map((history, historyIdx, arr) => (
+							<Fragment key={historyIdx}>
+								<div className='flex flex-col gap-1'>
+									<h2 className='text-xl text-white font-bold'>{history.prompt}</h2>
+									<p className='text-sm text-gray-300 '>
+										<TypeAnimation text={history.answer} timeout={1000} interval={100} />
+									</p>
+								</div>
+								{historyIdx !== arr.length - 1 && <div className='w-full h-px my-5 bg-gray-500' />}
+							</Fragment>
+						))}
+					</div>
+					{speaking && <span className='text-sm text-white font-bold'>...Ответ</span>}
+					{pending && <span className='text-sm text-white font-bold'>...Загрузка</span>}
+				</Container>
+			</div>
 			<BottomBar />
 		</SpeakProvider>
 	)
@@ -135,6 +137,28 @@ function Submit() {
 			</Button>
 		),
 	}[String(!!speaking)]
+}
+
+function TypeAnimation({ text, timeout, interval }: { text: string; timeout: number; interval: number }) {
+	const [position, setPosition] = useState<number>(0)
+
+	useEffect(() => {
+		let intervalId: NodeJS.Timeout | undefined
+
+		const typeText = () => {
+			setPosition((prev) => prev + 1)
+			intervalId = setTimeout(typeText, interval)
+		}
+
+		const timeoutId = setTimeout(typeText, timeout)
+
+		return () => {
+			if (intervalId) clearInterval(intervalId)
+			clearTimeout(timeoutId)
+		}
+	}, [text, timeout, interval])
+
+	return <>{text.substring(0, position)}</>
 }
 
 function SpeakProvider({ children }: PropsWithChildren) {

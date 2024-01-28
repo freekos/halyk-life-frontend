@@ -14,6 +14,7 @@ export enum ListeningStatus {
 
 export const pageStartEv = createEvent<void>()
 export const promptSubmitEv = createEvent<void>()
+export const promptAddEv = createEvent<string>()
 export const speakingApiChangeEv = createEvent<{
 	speak?: () => void
 	speaking?: boolean
@@ -64,8 +65,8 @@ export const listeningStartFx = createEffect<void, SpeechRecognition>(() => {
 	recoginition.onresult = (e) => {
 		const { results } = e
 		const prompts = Array.from(results)
-		const promptText = prompts.map((result: any) => result[0].transcript).join('. ')
-		prompt.valueChangeEv(promptText)
+		// const promptText = prompts.map((result: any) => result[0].transcript).join('. ')
+		promptAddEv(prompts[prompts.length - 1]![0]?.transcript as string)
 	}
 	recoginition.onend = () => listeningStopFx()
 	recoginition.onerror = (e) => {
@@ -119,6 +120,12 @@ $listeningStatus.on(listeningStopFx.done, () => ListeningStatus.Stop)
 
 sample({
 	clock: promptSubmitEv,
+	target: prompt.findErrorFx,
+})
+
+sample({
+	clock: prompt.findErrorFx.done,
+	filter: prompt.$error.map((error) => !error),
 	target: getPromptAnswerFx,
 })
 
@@ -127,6 +134,8 @@ const promptWillUpdate = sample({
 	source: prompt.$value,
 	fn: (prompt, { data }) => ({ prompt, answer: data.response }),
 })
+
+prompt.$value.on(promptAddEv, (prevValue, newValue) => (prevValue ? [prevValue, newValue].join(', ') : newValue))
 
 $promptsHistory.on(promptWillUpdate, (prompts, newPrompt) => [...prompts, newPrompt])
 prompt.$value.on(promptWillUpdate, () => '')
@@ -138,8 +147,9 @@ sample({
 	source: $speakApi,
 	filter: (speakApi: any | null): speakApi is any => !!speakApi,
 	fn: ({ speak, voices }, { result }) => {
-		speak({ text: result.data.response, voice: voices.find((voice: any) => voice.lang.includes('ru-RU')) })
+		speak({ text: cleanText(result.data.response), voice: voices.find((voice: any) => voice.lang.includes('ru-RU')) })
 	},
+	target: [listeningStopFx, prompt.$value.reinit],
 })
 
 sample({
@@ -151,3 +161,8 @@ sample({
 	clock: pageStartEv,
 	target: [prompt.$value.reinit, prompt.$error.reinit, $listeningStatus.reinit],
 })
+
+function cleanText(text: string): string {
+	const cleanedText = text.replace(/[^a-zA-Zа-яА-Я0-9\s]/g, '')
+	return cleanedText
+}
