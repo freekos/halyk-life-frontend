@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createEffect, createStore } from 'effector'
 
-const BASE_URL = 'https://ba64-2-72-62-84.ngrok-free.app'
+const BASE_URL = 'http://0.tcp.in.ngrok.io:11408'
 
 export interface User {
 	name: string
@@ -21,14 +21,24 @@ interface UsersStore {
 	users: User[]
 }
 
+const formatDate = (date: string) => {
+	const regex = /^(\d{4})-(\d{2})-(\d{2})T\d{2}:\d{2}:\d{2}$/
+	const match = date.match(regex)!
+	return match[3] + '-' + match[2] + '-' + match[1]
+}
 export const getUserFx = createEffect()
+export const getUsersFx = createEffect<void, any>()
 getUserFx.use(async (params) => {
 	const req = await axios.get(`${BASE_URL}/person/${params}`)
 	// const user:User={name:req.data}
-	// return req
-	console.log(req)
+	console.log(req.data)
+	return req
 })
-getUserFx.done.watch(console.log)
+
+getUsersFx.use(async () => {
+	const req = await axios.get(`${BASE_URL}/get_users`)
+	return req.data
+})
 export const $users = createStore<UsersStore>({
 	users: [
 		{
@@ -53,6 +63,26 @@ export const $users = createStore<UsersStore>({
 			birthday: '20.11.2000',
 		},
 	],
-}).on(getUserFx.doneData, (store, data) => {
-	return { ...store }
 })
+	.on(getUserFx.doneData, (store, data) => {
+		const dataObj = data.data
+		const formattedDate = formatDate(dataObj.person.birthDate)
+		const newUser: User = {
+			name: `${dataObj.person.firstName} ${dataObj.person.lastName} ${dataObj.person.secondName}`,
+			birthday: formattedDate,
+			hospital: dataObj.person.org,
+			address: dataObj.person.address,
+			insuranceType: FILTER.PENDING,
+		}
+		return { ...store, users: [...store.users, newUser] }
+	})
+	.on(getUsersFx.doneData, (store, data) => {
+		const newData = data.map((el) => ({
+			name: `${el.user_data.firstName} ${el.user_data.lastName} ${el.user_data.secondName}`,
+			birthday: formatDate(el.user_data.birthDate),
+			hospital: el.user_data.org,
+			address: el.user_data.address,
+			insuranceType: el.status === 'waiting' ? FILTER.PENDING : el.status,
+		}))
+		return { ...store, users: newData }
+	})

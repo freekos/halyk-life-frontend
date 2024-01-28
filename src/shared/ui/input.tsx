@@ -7,7 +7,7 @@ interface InputProps extends ComponentProps<'input'> {
 		left?: ReactNode
 		right?: ReactNode
 	}
-	error?: string
+	error?: string | null
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(

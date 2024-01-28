@@ -1,9 +1,9 @@
-import { $users, FILTER } from '@/admin/components/user/model.ts'
+import { $users, FILTER, getUserFx, getUsersFx } from '@/admin/components/user/model.ts'
 import { UserComponent } from '@/admin/components/UserComponent.tsx'
 import { Logo } from '@/shared/assets/icons'
 import { Button } from '@/shared/ui'
 import { useUnit } from 'effector-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const AdminPage = () => {
 	const userStore = useUnit($users)
@@ -18,6 +18,12 @@ export const AdminPage = () => {
 	if (filter === FILTER.PENDING) {
 		filteredUsers = userStore.users.filter((el) => el.insuranceType === FILTER.PENDING)
 	}
+	useEffect(() => {
+		getUsersFx()
+		setInterval(() => {
+			getUsersFx()
+		}, 5000)
+	}, [])
 	return (
 		<div className={'w-screen h-screen overflow-x-hidden'}>
 			<div className={'w-full fixed h-20 z-30 flex justify-between items-center p-6 bg-[#EDEDED]'}>

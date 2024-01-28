@@ -7,7 +7,7 @@ export function Routing() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' Component={HomePage} />
+				<Route path='/:iin' Component={HomePage} />
 				<Route path='/consult' Component={ConsultPage} />
 				<Route path='/admin' Component={AdminPage} />
 			</Routes>

@@ -1,15 +1,18 @@
 import { RootLayout } from '@/platform/layout'
-import { Advantages } from '@/platform/pages/home/components/Advantages.tsx'
 import { Hero } from '@/platform/pages/home/components/Hero.tsx'
-import { Links } from '@/platform/pages/home/components/Links.tsx'
+import { InsuranceForm } from '@/platform/pages/home/components/InsuranceForm.tsx'
+import { useParams } from 'react-router'
 
 export function HomePage() {
+	const { iin } = useParams()
+	if (iin) {
+		window.location.hash = 'insurance-form'
+	}
 	return (
 		<div className={'w-screen h-screen overflow-x-hidden'}>
 			<RootLayout>
 				<Hero />
-				<Links />
-				<Advantages />
+				<InsuranceForm />
 			</RootLayout>
 		</div>
 	)

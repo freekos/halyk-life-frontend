@@ -11,8 +11,10 @@
 }
 
 .hero {
-	background-image: url("../../../../shared/assets/images/hero.png");
-	background-size: cover;
+	background-image: url("../../../../shared/assets/images/aya.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .image{
 	background-image: url("../../../../shared/assets/images/adv-1.png");
