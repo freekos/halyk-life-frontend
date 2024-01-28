@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export const Header = () => {
-	const [setPage, page] = useState<'aya' | 'insurance' | 'home'>('home')
 	return (
 		<div className={'w-full fixed h-20 z-30 flex gap-96 items-center p-6 bg-[#313338] lg:gap-9'}>
 			<Logo />
